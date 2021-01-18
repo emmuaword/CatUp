@@ -19,7 +19,7 @@
 
         <service
             android:name=".CatService"
-            android:label="猫猫活动"
+            android:label="淘宝自动"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

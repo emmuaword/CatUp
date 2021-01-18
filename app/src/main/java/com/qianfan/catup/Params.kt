@@ -10,6 +10,8 @@ object Params {
 
     var mode = Mode.VIEW_PAGE
 
+    var isSkip = false
+
     @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
     @MustBeDocumented
     @IntDef(Mode.VIEW_PAGE, Mode.CLICK_CAT)

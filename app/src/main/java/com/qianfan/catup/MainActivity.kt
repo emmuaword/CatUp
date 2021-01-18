@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
             Params.mode = Params.Mode.VIEW_PAGE
         }
         btn_open_permission.setOnClickListener {
-            if (!isAccessibilitySettingsOn(this, CatService::class.java)) {
+//            if (!isAccessibilitySettingsOn(this, CatService::class.java)) {
                 startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-            }
+//            }
         }
         btn_save_keyword.setOnClickListener {
             val keyword = et_keyword.text.toString()
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "请输入正确格式的浏览时间", Toast.LENGTH_SHORT).show()
             }
         }
+        cb_skip.setOnClickListener { Params.isSkip=cb_skip.isChecked}
     }
 
     @SuppressLint("SetTextI18n")
@@ -68,16 +69,16 @@ class MainActivity : AppCompatActivity() {
 
 
     fun isAccessibilitySettingsOn(
-        mContext: Context,
-        clazz: Class<out AccessibilityService?>
+            mContext: Context,
+            clazz: Class<out AccessibilityService?>
     ): Boolean {
         var accessibilityEnabled = 0
         val service: String =
-            mContext.getPackageName().toString() + "/" + clazz.canonicalName
+                mContext.packageName.toString() + "/" + clazz.canonicalName
         try {
             accessibilityEnabled = Settings.Secure.getInt(
-                mContext.getApplicationContext().getContentResolver(),
-                Settings.Secure.ACCESSIBILITY_ENABLED
+                    mContext.applicationContext.contentResolver,
+                    Settings.Secure.ACCESSIBILITY_ENABLED
             )
         } catch (e: Settings.SettingNotFoundException) {
             e.printStackTrace()
@@ -85,8 +86,8 @@ class MainActivity : AppCompatActivity() {
         val mStringColonSplitter = SimpleStringSplitter(':')
         if (accessibilityEnabled == 1) {
             val settingValue: String = Settings.Secure.getString(
-                mContext.getApplicationContext().getContentResolver(),
-                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+                    mContext.applicationContext.contentResolver,
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             )
             if (settingValue != null) {
                 mStringColonSplitter.setString(settingValue)

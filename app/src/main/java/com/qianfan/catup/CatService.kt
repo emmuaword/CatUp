@@ -1,6 +1,7 @@
 package com.qianfan.catup
 
 import android.accessibilityservice.AccessibilityService
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -81,7 +82,8 @@ class CatService : AccessibilityService() {
                         }
                     }
                     Params.Mode.VIEW_PAGE -> {
-                        if (rootNode.text.toString() == "累计任务奖励") {
+//                        if (rootNode.text.toString() == "累计任务奖励") {
+                        if (rootNode.text.toString() == "做任务赢奖励") {
                             mHasCat = true
                         }
                     }
@@ -91,6 +93,11 @@ class CatService : AccessibilityService() {
     }
 
     var isViewingPage = false
+
+    /**
+     * 用于跳过邀请好友的那一步
+     */
+    var isFirstFind = true
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun performSth(rootNode: AccessibilityNodeInfo) {
@@ -118,6 +125,10 @@ class CatService : AccessibilityService() {
                     Params.Mode.VIEW_PAGE -> {
                         if (!isViewingPage) {
                             if (rootNode.text.toString().contains(Params.keyword)) {
+                                if (Params.isSkip && isFirstFind) {
+                                    isFirstFind = false
+                                    return
+                                }
                                 isFind = true
                                 isViewingPage = true
                                 Log.d(TAG, "执行点击事件 keyword:" + Params.keyword)
@@ -126,6 +137,7 @@ class CatService : AccessibilityService() {
 
                                 uiHandler.postDelayed(Runnable {
                                     isViewingPage = false
+                                    isFirstFind = true
                                     performGlobalAction(GLOBAL_ACTION_BACK)
                                 }, Params.viewTime * 1000)
                             }
@@ -156,6 +168,9 @@ class CatService : AccessibilityService() {
         return null
     }
 
+    override fun unbindService(conn: ServiceConnection) {
+        super.unbindService(conn)
+    }
 //    }
 
 }
