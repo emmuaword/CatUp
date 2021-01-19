@@ -125,7 +125,7 @@ class CatService : AccessibilityService() {
                     Params.Mode.VIEW_PAGE -> {
                         if (!isViewingPage) {
                             if (rootNode.text.toString().contains(Params.keyword)) {
-                                if (Params.isSkip && isFirstFind) {
+                                if (Params.isSkip && isFirstFind && Params.keyword == "去完成") {
                                     isFirstFind = false
                                     return
                                 }
